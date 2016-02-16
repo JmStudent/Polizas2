@@ -21,32 +21,15 @@
         android:layout_centerHorizontal="true"
         android:textStyle="bold" />
 
-    <TextView
+    <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/insertaedad"
         android:text="@string/edad"
-        android:id="@+id/edad"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        android:textColor="#000000"
         android:layout_below="@+id/titulo"
         android:layout_alignLeft="@+id/titulo"
         android:layout_alignStart="@+id/titulo"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="70dp" />
-
-    <EditText
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:inputType="numberSigned"
-        android:ems="10"
-        android:id="@+id/insertaedad"
-        android:layout_below="@+id/titulo"
-        android:layout_toRightOf="@+id/edad"
-        android:layout_toEndOf="@+id/edad"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginLeft="-20dp" />
 
     <Switch
         android:layout_width="240dp"
@@ -56,12 +39,9 @@
         android:textColor="#000000"
         android:textSize="19dp"
         android:textStyle="bold"
-        android:layout_below="@+id/insertaedad"
-        android:layout_alignLeft="@+id/edad"
-        android:layout_alignStart="@+id/edad"
-        android:layout_marginTop="20dp"
         android:background="#D9D9D9"
-        android:layout_marginLeft="-60dp" />
+        android:layout_below="@+id/insertaedad"
+        android:layout_centerHorizontal="true" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -106,7 +86,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="54dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginStart="54dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/nHijos"
@@ -161,11 +141,9 @@
         android:id="@+id/calcular"
         android:layout_marginTop="32dp"
         android:textStyle="bold"
-        android:layout_below="@+id/relativeBox"
-        android:layout_alignLeft="@+id/estado"
-        android:layout_alignStart="@+id/estado"
-        android:layout_marginLeft="80dp"
-        android:onClick="showText" />
+        android:onClick="showText"
+        android:layout_below="@+id/estado"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="110dp"

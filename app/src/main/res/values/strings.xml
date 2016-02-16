@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Polizas</string>
     <string name="titulo">Calculadora de Póliza</string>
-    <string name="edad">Edad</string>
+    <string name="edad">Edad...</string>
     <string name="estado">Casado</string>
     <string name="zeroSons">0</string>
     <string name="oneSon">1</string>
