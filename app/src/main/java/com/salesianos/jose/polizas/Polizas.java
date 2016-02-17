@@ -4,17 +4,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class Polizas extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
+public class Polizas extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     //Declaramos las variables
-    private EditText mEdad = null;
     private TextView mImporte = null;
     private Switch mEstado = null;
     private TextView mHijos = null;
@@ -24,18 +25,32 @@ public class Polizas extends AppCompatActivity implements CompoundButton.OnCheck
     private int incremento = 0;
     private RadioGroup rg = null;
 
+    /*
+    * Spinner spinner = (Spinner) findViewById(R.id.spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        R.array.planets_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+spinner.setAdapter(adapter);
+    *
+    * */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_polizas);
 
         //Damos valores a la variables
-        mEdad = (EditText) findViewById(R.id.insertaedad);
         mImporte = (TextView) findViewById(R.id.cajatexto);
         mEstado = (Switch) findViewById(R.id.estado);
         mHijos = (TextView) findViewById(R.id.numero);
         mCaja = (RelativeLayout) findViewById(R.id.relativeBox);
 
+        //Damos valores al spinner
+        Spinner mEdad = (Spinner) findViewById(R.id.insertaedad);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.insertaedad, android.R.layout.simple_spinner_item);
         //Esto sirve para recoger los datos del radiogroup
         rg = (RadioGroup) findViewById(R.id.optionHijos);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -73,6 +88,17 @@ public class Polizas extends AppCompatActivity implements CompoundButton.OnCheck
 
     }
 
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        mImporte.setText("El importe de su póliza es " + ((importe - discSons) + incremento) + " € / mes ");
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
@@ -101,7 +127,6 @@ public class Polizas extends AppCompatActivity implements CompoundButton.OnCheck
         mImporte.setText("");
         incremento = 0;
         discSons = 0;
-        mEdad.setText("");
         mCaja.setVisibility(View.GONE);
         mEstado.setChecked(false);
         rg.clearCheck();
