@@ -1,5 +1,6 @@
 package com.salesianos.jose.polizas;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class Polizas extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener/*, AdapterView.OnItemSelectedListener */{
+public class Polizas extends AppCompatActivity /*implements CompoundButton.OnCheckedChangeListener/*, AdapterView.OnItemSelectedListener */{
 
     //Declaramos las variables
     private Spinner mEdad = null;
@@ -81,6 +82,7 @@ spinner.setAdapter(adapter);
                     case R.id.single:
                         mCaja.setVisibility(View.GONE);
                         discSons = 0;
+                        mostrarImporte();
                         break;
                 }
             }
@@ -127,45 +129,61 @@ spinner.setAdapter(adapter);
             }
             });*/
 
-            mNumHijos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            mEdad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (mNumHijos.getSelectedItemPosition() > 0) {
-
-                        int edad = Integer.parseInt(mNumHijos.getSelectedItem().toString());
+                    if (mEdad.getSelectedItemPosition() > 0) {
+                        int edad = Integer.parseInt(mEdad.getSelectedItem().toString());
                         if (edad > 34) {
                             for (int i = 34; i < edad; i++)
                                 incremento++;
+                        } else {
+                            incremento = 0;
                         }
                         mostrarImporte();
-/*
-                        switch (grupob.getCheckedRadioButtonId()) {
-                            case R.id.bsoltero:
-
-                                calcular(0);
-
-                            case R.id.bcasado:*/
-
-                                //Calculamos precio con hijos
-
-                                mNumHijos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                        //calcular(position);
-
-                                    }
-                                });
-                       // }
+                    } else {
+                        mImporte.setText("");
                     }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
+                    mImporte.setText("");
                 }
             });
+
+        mNumHijos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                for(int a = 0; a < parent.getChildCount(); a++)
+                {
+                    parent.getChildAt(a).setBackgroundColor(Color.WHITE);
+                }
+                view.setBackgroundColor(Color.GREEN);
+
+                switch (position) {
+                    case 0:
+                        mHijos.setText("0");
+                        discSons = 0;
+                        break;
+                    case 1:
+                        mHijos.setText("1");
+                        discSons = importe * 0.05f;
+                        break;
+                    case 2:
+                        mHijos.setText("2");
+                        discSons = importe * 0.10f;
+                        break;
+                    case 3:
+                        mHijos.setText("3 o +");
+                        discSons = importe * 0.15f;
+                        break;
+                }
+                mostrarImporte();
+            }
+        });
     }
         /*
         //Esto sirve para recoger los datos del radiogroup
@@ -205,7 +223,7 @@ spinner.setAdapter(adapter);
 
 
 
-
+/*
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
@@ -215,7 +233,7 @@ spinner.setAdapter(adapter);
             discSons = 0;
         }
     }
-/*
+
     public void showText(View v) {
         String edadCadena = mEdad.getText().toString();
         if (TextUtils.isEmpty(edadCadena)) {
