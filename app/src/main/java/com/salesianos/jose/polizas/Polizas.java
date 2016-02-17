@@ -1,29 +1,40 @@
 package com.salesianos.jose.polizas;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class Polizas extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+public class Polizas extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener/*, AdapterView.OnItemSelectedListener */{
 
     //Declaramos las variables
-    private TextView mImporte = null;
-    private Switch mEstado = null;
-    private TextView mHijos = null;
+    private Spinner mEdad = null;
+    private RadioGroup rg = null;
     private RelativeLayout mCaja = null;
+    private TextView mHijos = null;
+    private ListView mNumHijos = null;
+    private Button mRemove = null;
+    private TextView mImporte = null;
+
+    //Variables que no se extraen del modo gráfico para trabajar con ellas.
     private float discSons = 0;
     private float importe = 40f;
     private int incremento = 0;
-    private RadioGroup rg = null;
 
     /*
     * Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -42,24 +53,28 @@ spinner.setAdapter(adapter);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_polizas);
 
+        //Damos valores al spinner
+        mEdad = (Spinner) findViewById(R.id.insertaedad);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.insertaedad, android.R.layout.simple_spinner_item);
+        mEdad.setAdapter(adapter);
+
+        //Damos valores al ListView
+        mNumHijos = (ListView) findViewById(R.id.selectSon);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.numSons, android.R.layout.simple_spinner_item);
+        mNumHijos.setAdapter(adapter2);
+
         //Damos valores a la variables
         mImporte = (TextView) findViewById(R.id.cajatexto);
-        mEstado = (Switch) findViewById(R.id.estado);
         mHijos = (TextView) findViewById(R.id.numero);
         mCaja = (RelativeLayout) findViewById(R.id.relativeBox);
+        mRemove = (Button) findViewById(R.id.borrar);
 
-        //Damos valores al spinner
-        Spinner mEdad = (Spinner) findViewById(R.id.insertaedad);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.insertaedad, android.R.layout.simple_spinner_item);
-
+        //Aquí contenemos al radiogroup y controlamos sus acciones
         rg = (RadioGroup) findViewById(R.id.state);
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
-                switch(checkedId)
-                {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
                     case R.id.married:
                         mCaja.setVisibility(View.VISIBLE);
                         break;
@@ -70,6 +85,88 @@ spinner.setAdapter(adapter);
                 }
             }
         });
+/*
+        mNumHijos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+
+        {
+            @Override
+            public void onItemSelected (AdapterView < ? > parent, View view,
+                                        int pos, long id){
+
+                if (parent.getId() == mNumHijos.getId()) {
+                    switch (mNumHijos.getSelectedItemPosition()) {
+
+                    }
+                } else if (parent.getId() == mEdad.getId()) {
+
+                }
+
+                if (pos == 4) {
+                    incremento++;
+                } else if (pos > 4) {
+                    for (int i = 5; i < pos; i++)
+                        incremento += 5;
+                }
+
+                switch (pos) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                // An item was selected. You can retrieve the selected item using
+                // parent.getItemAtPosition(pos)
+            })
+            mNumHijos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+
+            {
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+            });*/
+
+            mNumHijos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (mNumHijos.getSelectedItemPosition() > 0) {
+
+                        int edad = Integer.parseInt(mNumHijos.getSelectedItem().toString());
+                        if (edad > 34) {
+                            for (int i = 34; i < edad; i++)
+                                incremento++;
+                        }
+                        mostrarImporte();
+/*
+                        switch (grupob.getCheckedRadioButtonId()) {
+                            case R.id.bsoltero:
+
+                                calcular(0);
+
+                            case R.id.bcasado:*/
+
+                                //Calculamos precio con hijos
+
+                                mNumHijos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                        //calcular(position);
+
+                                    }
+                                });
+                       // }
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+    }
         /*
         //Esto sirve para recoger los datos del radiogroup
         rg = (RadioGroup) findViewById(R.id.optionHijos);
@@ -102,22 +199,12 @@ spinner.setAdapter(adapter);
         */
         //esto junto con el método onCheckedChanged y el implements Compound.... sirve para recoger
         //los datos del switch (es decir, si se acciona o no)
-        mEstado = (Switch) findViewById(R.id.estado);
-        mEstado.setOnCheckedChangeListener(this);
+        //mEstado = (Switch) findViewById(R.id.estado);
+        //mEstado.setOnCheckedChangeListener(this);
 
 
-    }
 
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        mImporte.setText("El importe de su póliza es " + ((importe - discSons) + incremento) + " € / mes ");
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-    }
 
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -128,10 +215,10 @@ spinner.setAdapter(adapter);
             discSons = 0;
         }
     }
-
+/*
     public void showText(View v) {
         String edadCadena = mEdad.getText().toString();
-        if(TextUtils.isEmpty(edadCadena)) {
+        if (TextUtils.isEmpty(edadCadena)) {
             mEdad.setError("Este campo no puede quedar vacío");
             return;
         }
@@ -142,14 +229,18 @@ spinner.setAdapter(adapter);
         }
         mImporte.setText("El importe de su póliza es " + ((importe - discSons) + incremento) + " € / mes ");
     }
-
+*/
     public void hideText(View v) {
+        rg.clearCheck();
+        mCaja.setVisibility(View.GONE);
         mImporte.setText("");
+        mEdad.setSelection(0);
         incremento = 0;
         discSons = 0;
-        mCaja.setVisibility(View.GONE);
-        mEstado.setChecked(false);
-        rg.clearCheck();
         mHijos.setText("");
+    }
+
+    public void mostrarImporte() {
+        mImporte.setText("El importe de su póliza es " + ((importe - discSons) + incremento) + " € / mes ");
     }
 }

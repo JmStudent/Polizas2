@@ -13,4 +13,10 @@
         <item>60</item>
         <item>65</item>
     </string-array>
+    <string-array name="numSons">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3 o más</item>
+    </string-array>
 </resources>

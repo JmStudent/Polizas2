@@ -22,25 +22,23 @@
         android:textStyle="bold" />
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/insertaedad"
-        android:text="@string/edad"
         android:layout_below="@+id/titulo"
         android:layout_alignLeft="@+id/titulo"
         android:layout_alignStart="@+id/titulo"
-        android:layout_marginLeft="-20dp" />
+        android:layout_marginLeft="40dp" />
 
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/insertaedad"
-        android:layout_alignStart="@+id/insertaedad"
+        android:layout_alignLeft="@+id/titulo"
         android:id="@+id/state"
         android:layout_below="@+id/insertaedad"
-        android:layout_marginLeft="50dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="30dp">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -101,12 +99,10 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listView"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/selectSon"
             android:layout_alignTop="@+id/nHijos"
             android:layout_toRightOf="@+id/nHijos"
-            />
+            android:layout_marginLeft="15dp" />
 
     </RelativeLayout>
 
