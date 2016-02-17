@@ -13,7 +13,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class Polizas extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Polizas extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
 
     //Declaramos las variables
     private TextView mImporte = null;
@@ -51,6 +51,26 @@ spinner.setAdapter(adapter);
         //Damos valores al spinner
         Spinner mEdad = (Spinner) findViewById(R.id.insertaedad);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.insertaedad, android.R.layout.simple_spinner_item);
+
+        rg = (RadioGroup) findViewById(R.id.state);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                switch(checkedId)
+                {
+                    case R.id.married:
+                        mCaja.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.single:
+                        mCaja.setVisibility(View.GONE);
+                        discSons = 0;
+                        break;
+                }
+            }
+        });
+        /*
         //Esto sirve para recoger los datos del radiogroup
         rg = (RadioGroup) findViewById(R.id.optionHijos);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -79,7 +99,7 @@ spinner.setAdapter(adapter);
                 }
             }
         });
-
+        */
         //esto junto con el método onCheckedChanged y el implements Compound.... sirve para recoger
         //los datos del switch (es decir, si se acciona o no)
         mEstado = (Switch) findViewById(R.id.estado);
